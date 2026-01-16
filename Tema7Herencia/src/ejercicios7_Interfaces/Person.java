@@ -2,15 +2,21 @@ package ejercicios7_Interfaces;
 
 public abstract class Person {
 
-	protected String name;
 	protected String type;
+	protected String name;
 	
-	public Person(String name, String type) {
-		this.name = name;
+	public Person(String type, String name) {
 		this.type = type;
+		this.name = name;
 	}
 	
 	
+	public void numberType() {
+	}
  
+	@Override
+	public String toString() {
+		return String.format("\n%s - %s \n", type, name); 
+	}  
 	
 }
