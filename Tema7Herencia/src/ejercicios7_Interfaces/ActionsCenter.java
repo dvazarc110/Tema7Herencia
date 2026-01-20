@@ -2,10 +2,12 @@ package ejercicios7_Interfaces;
 
 public interface ActionsCenter {
 
-	void validate(String name);
+	void validate();
 	
-	void riseSalary(int percentage);
-	
-	void addGrade(double grade);
+    boolean isValidated();
+    
+    String toArray(String type);
+    
+    String numberType();
 	
 }

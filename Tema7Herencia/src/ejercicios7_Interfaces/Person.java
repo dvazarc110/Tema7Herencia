@@ -4,15 +4,24 @@ public abstract class Person {
 
 	protected String type;
 	protected String name;
-	
-	public Person(String type, String name) {
+	protected int position;
+    protected boolean validado = false;
+
+	public Person(String type, String name, int position) {
 		this.type = type;
 		this.name = name;
+		this.position = position;
 	}
 	
 	
-	public void numberType() {
-	}
+	public void validate() {
+        validado = true;
+    }
+
+    public boolean isValidated() {
+        return validado;
+    }
+	
  
 	@Override
 	public String toString() {

@@ -2,94 +2,114 @@ package ejercicios7_Interfaces;
 
 import java.util.Scanner;
 
+
+
 public class IesSaladillo {
 
 	@SuppressWarnings("resource")
 	
-	public void createObjects() {
+	public static void main(String[] args) {
+
+        ActionsCenter[] personas = createObjects();
+       
+        System.out.println();
+        System.out.println();
+        showArray(personas);
+        System.out.println();
+        showOrder(personas);
+        System.out.println();
+        showObjects(personas);
+        System.out.println();
+        processData(personas);
+    }
+	
+	
+	
+	public static ActionsCenter[] createObjects() {
 		
 		Scanner keyboard = new Scanner(System.in);
 		ConsoleInput consola = new ConsoleInput(keyboard);
-		Person[][] personas;
-		Students student;
-		Teachers teacher;
-		String answer, name;
-		boolean check = false;
-		boolean recheck = true;
-		int contte, contst, salary;
-		personas = new Person[8][3];
+		ActionsCenter[] p;
+		String name;
+		int contte, contst;
+		double salary;
 		
-		for(int i = 0; i < personas.length; i++) {
-			check = false;
-			System.out.printf("Persona número: %d\n¿Profesor o alumno?\n", i+1);
-			while(check == false || recheck == false) {
-				answer = consola.readString();
-				if(answer.equalsIgnoreCase("profesor")) {
-					answer = answer.replace('p', 'P');
-					contte = 5;
-					while(check == false) {
-						if(contte >= personas.length) {
-							System.out.println("Ya se han introducido todos los profesores, revisa si los introducidos son correctos o si la persona a introducir realmente es un profesor.");
-							check = true;
-							recheck = false;
-						}else if((personas[contte][0]) == null) {
-							System.out.printf("\nIntroduzca el nombre del profesor número: %d\n", contte-4);
-							name = consola.readString();
-							System.out.printf("\nIntroduzca el salario del profesor número: %d\n", contte-4);
-							salary = consola.readInt();
-							teacher = new Teachers (answer, name, salary);
-							personas[contte] = new Person[]{teacher};
-							check = true;
-							recheck = true;
-						}else {
-							contte++;
-							recheck = true;
-						}
-					}
-					consola.cleanInput();
-					
-				}else if(answer.equalsIgnoreCase("alumno")) {
-					answer = answer.replace("a", "A");
-					contst = 0;
-					while(check == false) {
-						if(contst >= 5) {
-							System.out.println("Ya se han introducido todos los alumnos, revisa si los introducidos son correctos o si la persona a introducir realmente es un alumno.");
-							check = true;
-							recheck = false;
-						}else if((personas[contst][0]) == null) {
-							System.out.printf("\nIntroduzca el nombre del alumno número: %d\n", contst+1);
-							name = consola.readString();
-							double[] grades = new double[3];
-							student = new Students (answer, name, contst, grades);
-							personas[contst] = new Person[]{student};
-							check = true;
-							recheck = true;
-							
-						}else {
-							contst++;
-							recheck = true;
-						}
-					}
-					
-					
-				}else if((answer.isBlank()) || (!(answer.equalsIgnoreCase("profesor")) && !(answer.equalsIgnoreCase("alumno")))) {
-					System.out.println("No se reconoce el rol de la persona a añadir.\nPor favor indica si la persona es un profesor o un alumno");
-				}
-			}
+		System.out.println("¿Cuantos alumnos quiere introducir?");
+		contst = consola.readInt();
+		
+		System.out.println("¿Cuantos profesores quiere introducir?");
+		contte = consola.readInt();
+
+		p = new ActionsCenter[(contst+contte)];
+
+		
+		System.out.println("\nAlumnos:");
+		for(int i = 0; i < contst; i++) {
+			System.out.printf("\nIntroduzca el nombre del alumno número %d : -> ", i+1);
+			name = consola.readString();
+			p[i] = new Alumno("Alumno", name, i+1);
 		}
 		
-		System.out.println("Tipo de objeto - Nombre");
-		for(int k = 0; k < personas.length; k++) {
-			System.out.printf("\n%s\n", personas[k]);
-			if(k == 4) {
-				System.out.printf("\nTipo de objeto - Nombre\n");
-			}
+		
+		System.out.println("\nProfesores:");
+		for(int i = contst; i < p.length; i++) {
+			System.out.printf("\nIntroduzca el nombre del profesor número %d : -> ", i-(contst-1));
+			name = consola.readString();
+			System.out.printf("\nIntroduzca el salario del profesor número %d : -> ", i-(contst-1));
+			salary = consola.readDouble();
+			p[i] = new Profesor("Profesor", name, i-(contst-1), salary);
+			
 		}
+		
+		return p;
+		
+	}
+		
+	public static void showArray(ActionsCenter[] array) {
+		String type;
+    	boolean check = true;
+    	System.out.println("Tipo del objeto  ----  Nombre");
+        for (ActionsCenter p : array) {
+        	type = p.getClass().getSimpleName();
+        	if((type.equalsIgnoreCase("profesor")) && (check)) {
+        		System.out.println("\nTipo del objeto  ----  Nombre  ----  Sueldo");
+        	}
+            System.out.println(p.toArray(type));
+        }
 	}
 	
-	public static void main(String[] args) {
+	public static void showOrder(ActionsCenter[] array) {
+        for (ActionsCenter p : array) {
+            System.out.println(p.numberType());
+        }
+    }
+	
+	public static void showObjects(ActionsCenter[] array) {
+        for (ActionsCenter p : array) {
+            System.out.println(p);
+        }
+    }
 
-		new IesSaladillo().createObjects();
-		
-	}
+    public static void processData(ActionsCenter[] array) {
+
+        for (int i = 0; i < array.length; i++) {
+
+            ActionsCenter p = array[i];
+            p.validate();
+
+            if (p instanceof Alumnos1) {
+                double nota = 2.5;
+                for (int j = 0; j < i; j++) {
+                    ((Alumnos1) p).addGrade(nota);
+                    nota += 2.5;
+                }
+            }
+
+            if (p instanceof Profesores1) {
+                ((Profesores1) p).riseSalary(i * 10);
+            }
+        }
+
+        showObjects(array);
+    }
 }
