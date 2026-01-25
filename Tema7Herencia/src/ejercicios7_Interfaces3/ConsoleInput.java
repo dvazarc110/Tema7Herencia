@@ -1,170 +1,288 @@
 package ejercicios7_Interfaces3;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleInput {
-
-    private Scanner keyboard;
+   
+    private final Scanner keyboard;
 
     public ConsoleInput(Scanner keyboard) {
         this.keyboard = keyboard;
     }
 
-    // Limpia el buffer
+   
+    public ConsoleInput() {
+        keyboard = new Scanner(System.in);
+    }
+
     public void cleanInput() {
         keyboard.nextLine();
     }
-
-    // ---------- INT ----------
-
+    
+    
+    
     public int readInt() {
-        while (true) {
+        boolean isValid;
+        int in = 0;
+
+        do {
+            isValid = true;
             try {
-                int value = keyboard.nextInt();
-                cleanInput();
-                return value;
-            } catch (Exception e) {
-                System.out.print("Valor inválido. Introduce un entero: ");
+                in = keyboard.nextInt();
+            } catch (NumberFormatException | InputMismatchException e) {
+                System.err.println("Error en el INT");
+                isValid = false;
+            } finally {
                 cleanInput();
             }
-        }
+        } while (!isValid);
+        return in;
+
     }
 
+   
     public int readIntLessThan(int upperBound) {
-        int value;
+        int in;
+
         do {
-            value = readInt();
-        } while (value >= upperBound);
-        return value;
+            in = readInt();
+            if (upperBound <= in) {
+                System.err.printf("El INT introducido no es menor que %d\n", upperBound);
+            }
+        } while (upperBound <= in);
+
+        return (in);
     }
 
+   
     public int readIntLessOrEqualThan(int upperBound) {
-        int value;
+        int in;
+
         do {
-            value = readInt();
-        } while (value > upperBound);
-        return value;
+            in = readInt();
+            if (upperBound < in) {
+                System.err.printf("El INT introducido no es menor o igual a %d\n", upperBound);
+            }
+        } while (upperBound < in);
+
+        return (in);
     }
 
+    
     public int readIntGreaterThan(int lowerBound) {
-        int value;
+        int in;
+
         do {
-            value = readInt();
-        } while (value <= lowerBound);
-        return value;
+            in = readInt();
+            if (lowerBound >= in) {
+                System.err.printf("El INT introducido no es mayor que %d\n", lowerBound);
+            }
+        } while (lowerBound >= in);
+
+        return (in);
     }
 
+    
     public int readIntGreaterOrEqualThan(int lowerBound) {
-        int value;
+        int in;
+
         do {
-            value = readInt();
-        } while (value < lowerBound);
-        return value;
+            in = readInt();
+            if (lowerBound > in) {
+                System.err.printf("El INT introducido no es mayor o igual que %d\n", lowerBound);
+            }
+        } while (lowerBound > in);
+
+        return (in);
     }
 
+   
     public int readIntInRange(int lowerBound, int upperBound) {
-        int value;
-        do {
-            value = readInt();
-        } while (value < lowerBound || value > upperBound);
-        return value;
+        int in;
+
+        if (lowerBound > upperBound) {
+            throw new IllegalArgumentException("\nEl upperBound es menor que el lowerBound");
+        } else {
+            do {
+                in = readInt();
+                if (upperBound < in || lowerBound > in) {
+                    System.err.printf("El INT introducido no esta entre los valores %d y %d\n", lowerBound, upperBound);
+                }
+            } while ((upperBound < in || lowerBound > in));
+        }
+
+        return (in);
     }
 
-    // ---------- DOUBLE ----------
-
+ 
+    
     public double readDouble() {
-        while (true) {
+        boolean isValid;
+        double doubl = 0;
+
+        do {
+            isValid = true;
             try {
-                double value = keyboard.nextDouble();
-                cleanInput();
-                return value;
-            } catch (Exception e) {
-                System.out.print("Valor inválido. Introduce un número real: ");
+                doubl = keyboard.nextDouble();
+            } catch (NumberFormatException | InputMismatchException e) {
+                System.err.println("Error en el DOUBLE");
+                isValid = false;
+            } finally {
                 cleanInput();
             }
-        }
+        } while (!isValid);
+        return doubl;
+
     }
 
+   
     public double readDoubleLessThan(double upperBound) {
-        double value;
+        double doubl;
+
         do {
-            value = readDouble();
-        } while (value >= upperBound);
-        return value;
+            doubl = readDouble();
+            if (upperBound <= doubl) {
+                System.err.printf("El DOUBLE introducido no es menor que %f\n", upperBound);
+            }
+        } while (upperBound <= doubl);
+
+        return (doubl);
     }
 
+   
     public double readDoubleLessOrEqualThan(double upperBound) {
-        double value;
+        double doubl;
+
         do {
-            value = readDouble();
-        } while (value > upperBound);
-        return value;
+            doubl = readDouble();
+            if (upperBound < doubl) {
+                System.err.printf("El DOUBLE introducido no es menor o igual a %f\n", upperBound);
+            }
+        } while (upperBound < doubl);
+
+        return (doubl);
     }
 
+    
     public double readDoubleGreaterThan(double lowerBound) {
-        double value;
+        double doubl;
+
         do {
-            value = readDouble();
-        } while (value <= lowerBound);
-        return value;
+            doubl = readDouble();
+            if (lowerBound >= doubl) {
+                System.err.printf("El DOUBLE introducido no es mayor que %f\n", lowerBound);
+            }
+        } while (lowerBound >= doubl);
+
+        return (doubl);
     }
 
+    
     public double readDoubleGreaterOrEqualThan(double lowerBound) {
-        double value;
+        double doubl;
+
         do {
-            value = readDouble();
-        } while (value < lowerBound);
-        return value;
+            doubl = readDouble();
+            if (lowerBound > doubl) {
+                System.err.printf("El DOUBLE introducido no es mayor o igual que %f\n", lowerBound);
+            }
+        } while (lowerBound > doubl);
+
+        return (doubl);
     }
 
+   
     public double readDoubleInRange(double lowerBound, double upperBound) {
-        double value;
-        do {
-            value = readDouble();
-        } while (value < lowerBound || value > upperBound);
-        return value;
+        double doubl;
+
+        if (lowerBound > upperBound) {
+            throw new IllegalArgumentException("\nEl upperBound es menor que el lowerBound");
+        } else {
+            do {
+                doubl = readDouble();
+                if (upperBound < doubl || lowerBound > doubl) {
+                    System.err.printf("El DOUBLE introducido no esta entre los valores %f y %f\n", lowerBound,
+                            upperBound);
+                }
+            } while ((upperBound < doubl || lowerBound > doubl));
+        }
+
+        return (doubl);
     }
 
-    // ---------- STRING ----------
+   
+    
+    public char readChar() {
+        String str;
+        char cha = ' ';
+        boolean isValid;
+
+        do {
+            isValid = true;
+            str = keyboard.nextLine();
+            if (str.length() == 1) {
+                cha = str.charAt(0);
+            } else {
+                System.err.println("Error en el CHAR");
+                isValid = false;
+            }
+        } while (!isValid);
+
+        return cha;
+    }
+
+   
 
     public String readString() {
         return keyboard.nextLine();
     }
 
     public String readString(int maxLength) {
-        String text;
-        do {
-            text = readString();
-        } while (text.length() > maxLength);
-        return text;
-    }
+        String str;
 
-    // ---------- CHAR ----------
-
-    public char readChar() {
-        while (true) {
-            String input = readString();
-            if (input.length() == 1) {
-                return input.charAt(0);
-            }
-            System.out.print("Introduce solo un carácter: ");
+        if (maxLength < 0) {
+            throw new IllegalArgumentException("\nmaxLength es menor que 0");
         }
+        do {
+            str = readString();
+            if (str.length() > maxLength) {
+                System.err.println("El tamaño del STRING es mayor al especificado");
+            }
+        } while (str.length() > maxLength);
+
+        return str;
     }
 
-    // ---------- BOOLEAN ----------
+    //Boolean
+    public boolean readBooleanUsingChar(char affirmativeValue) {
+        return readChar() == affirmativeValue;
+    }
+
+    public boolean readBooleanUsingChar() {
+        return readBooleanUsingChar('s');
+    }
 
     public boolean readBooleanUsingChar(char affirmativeValue, char negativeValue) {
-        while (true) {
-            char value = Character.toLowerCase(readChar());
-            if (value == Character.toLowerCase(affirmativeValue)) {
-                return true;
-            }
-            if (value == Character.toLowerCase(negativeValue)) {
-                return false;
-            }
-            System.out.print("Valor inválido. Introduce " 
-                    + affirmativeValue + " o " + negativeValue + ": ");
-        }
-    }
-}
+        boolean bool = true, isValid = false;
+        char cha;
 
+        do {
+            cha = readChar();
+            if (cha == affirmativeValue) {
+                isValid = true;
+
+            } else if (cha == negativeValue) {
+                bool = false;
+                isValid = true;
+
+            } else {
+                System.err.println("El CHAR especificado no sirve, introduzca " + affirmativeValue + " para TRUE o "
+                        + negativeValue + " para FALSE");
+            }
+        } while (!isValid);
+
+        return bool;
+    }
+
+}
